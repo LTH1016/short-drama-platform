@@ -22,7 +22,7 @@ export const DramaCard: React.FC<DramaCardProps> = ({ drama, onClick, className 
       onClick={handleClick}
     >
       {/* 海报图片 */}
-      <div className="relative aspect-[3/4] overflow-hidden">
+      <div className="relative aspect-[4/5] overflow-hidden">
         <img
           src={drama.poster}
           alt={drama.title}
