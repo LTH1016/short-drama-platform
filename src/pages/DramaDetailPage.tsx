@@ -31,12 +31,25 @@ interface Comment {
 
 const DramaDetailPage: React.FC = () => {
   // 暂时使用第一个短剧作为示例，实际应用中会从路由参数获取
-  const { dramas, toggleFavorite } = useDramas();
+  const { dramaData, loading, error } = useDramas();
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(0);
   const [comments, setComments] = useState<Comment[]>([]);
   const [watchProgress, setWatchProgress] = useState<Record<string, number>>({});
 
+  const dramas = dramaData?.dramas || [];
   const drama = dramas[0]; // 暂时使用第一个短剧
+
+  const toggleFavorite = (id: string) => {
+    // 暂时的收藏功能实现
+    console.log('Toggle favorite for drama:', id);
+  };
+
+  // 调试信息
+  console.log('DramaDetailPage - dramaData:', dramaData);
+  console.log('DramaDetailPage - dramas:', dramas);
+  console.log('DramaDetailPage - drama:', drama);
+  console.log('DramaDetailPage - loading:', loading);
+  console.log('DramaDetailPage - error:', error);
 
   // 模拟剧集数据
   const episodes: Episode[] = drama ? Array.from({ length: 12 }, (_, i) => ({
@@ -89,6 +102,36 @@ const DramaDetailPage: React.FC = () => {
       setComments(mockComments);
     }
   }, [drama]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-white text-xl">加载中...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-white text-xl">加载失败: {error}</div>
+      </div>
+    );
+  }
+
+  if (!dramaData || !dramas.length) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-white text-xl">
+          {!dramaData ? '数据未加载' : '没有短剧数据'}
+          <br />
+          <small>dramaData: {JSON.stringify(!!dramaData)}</small>
+          <br />
+          <small>dramas length: {dramas.length}</small>
+        </div>
+      </div>
+    );
+  }
 
   if (!drama) {
     return (
