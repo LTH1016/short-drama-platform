@@ -20,6 +20,7 @@ interface SocialShareProps {
   url?: string;
   imageUrl?: string;
   hashtags?: string[];
+  size?: 'sm' | 'md' | 'lg';
 }
 
 interface SharePlatform {
@@ -42,7 +43,8 @@ const SocialShare: React.FC<SocialShareProps> = ({
   description = '',
   url = window.location.href,
   imageUrl = '',
-  hashtags = []
+  hashtags = [],
+  size = 'md'
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -166,16 +168,40 @@ const SocialShare: React.FC<SocialShareProps> = ({
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
   };
 
+  const getSizeClasses = () => {
+    switch (size) {
+      case 'sm':
+        return {
+          button: 'h-6 w-6 p-0',
+          icon: 'w-3 h-3',
+          showText: false
+        };
+      case 'lg':
+        return {
+          button: 'h-10 px-4',
+          icon: 'w-5 h-5',
+          showText: true
+        };
+      default: // md
+        return {
+          button: 'h-8 px-3',
+          icon: 'w-4 h-4',
+          showText: true
+        };
+    }
+  };
+
+  const sizeClasses = getSizeClasses();
+
   return (
     <>
       <Button
         onClick={handleNativeShare}
         variant="outline"
-        size="sm"
-        className="flex items-center space-x-2"
+        className={`flex items-center ${sizeClasses.showText ? 'space-x-2' : ''} ${sizeClasses.button} bg-black/50 hover:bg-black/70 border-0 text-white hover:text-white`}
       >
-        <Share2 className="w-4 h-4" />
-        <span>分享</span>
+        <Share2 className={sizeClasses.icon} />
+        {sizeClasses.showText && <span>分享</span>}
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

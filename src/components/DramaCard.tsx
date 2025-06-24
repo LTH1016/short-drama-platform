@@ -22,7 +22,7 @@ export const DramaCard: React.FC<DramaCardProps> = ({ drama, onClick, className 
       onClick={handleClick}
     >
       {/* 海报图片 */}
-      <div className="relative aspect-[3/4] overflow-hidden">
+      <div className="relative aspect-[2/3] overflow-hidden">
         <img
           src={drama.poster}
           alt={drama.title}
@@ -62,13 +62,14 @@ export const DramaCard: React.FC<DramaCardProps> = ({ drama, onClick, className 
         </div>
 
         {/* 分享按钮 */}
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-2 right-2">
           <div onClick={(e) => e.stopPropagation()}>
             <SocialShare
               title={drama.title}
               description={drama.description}
               imageUrl={drama.poster}
               hashtags={['短剧', ...drama.tags.slice(0, 2)]}
+              size="sm"
             />
           </div>
         </div>
@@ -102,34 +103,32 @@ export const DramaCard: React.FC<DramaCardProps> = ({ drama, onClick, className 
 
         {/* 统计信息 */}
         <div className="flex items-center justify-between text-sm text-drama-secondary">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span>{drama.rating}</span>
+              <span className="font-medium">{drama.rating}</span>
             </div>
             <div className="flex items-center gap-1">
               <Eye className="w-4 h-4" />
-              <span>{drama.views}</span>
+              <span className="font-medium">{drama.views}</span>
             </div>
             <div className="flex items-center gap-1">
               <MessageCircle className="w-4 h-4" />
-              <span>{Math.floor(Math.random() * 100) + 10}</span>
+              <span className="font-medium">{Math.floor(Math.random() * 100) + 10}</span>
             </div>
           </div>
-          
-          <div className="flex items-center gap-2">
-            <Button 
-              size="sm" 
-              variant="ghost" 
-              className="p-2 hover:text-red-400 transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                // 处理收藏逻辑
-              }}
-            >
-              <Heart className="w-4 h-4" />
-            </Button>
-          </div>
+
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-8 w-8 p-0 hover:text-red-400 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              // 处理收藏逻辑
+            }}
+          >
+            <Heart className="w-4 h-4" />
+          </Button>
         </div>
 
         {/* 演员信息 */}

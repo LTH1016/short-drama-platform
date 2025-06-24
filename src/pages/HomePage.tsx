@@ -163,7 +163,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         {/* 全部短剧网格 */}
         <section>
           <h2 className="text-xl font-bold text-foreground mb-6">全部短剧</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {dramaData.dramas
               .filter(drama => !selectedCategory || drama.category === selectedCategory)
               .map((drama) => (

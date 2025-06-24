@@ -47,9 +47,9 @@ export const RecommendationSection: React.FC<RecommendationSectionProps> = ({
 
       {/* 横向滚动的短剧列表 */}
       <ScrollArea className="w-full">
-        <div className="flex gap-4 pb-4">
+        <div className="flex gap-6 pb-4">
           {dramas.map((drama) => (
-            <div key={drama.id} className="flex-shrink-0 w-48">
+            <div key={drama.id} className="flex-shrink-0 w-52">
               <DramaCard
                 drama={drama}
                 onClick={onDramaClick}
