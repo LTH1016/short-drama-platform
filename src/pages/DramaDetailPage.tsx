@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { Heart, Play, Star, Calendar, Clock, Eye, Share2 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -31,22 +30,22 @@ interface Comment {
 }
 
 const DramaDetailPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  // 暂时使用第一个短剧作为示例，实际应用中会从路由参数获取
   const { dramas, toggleFavorite } = useDramas();
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState(0);
   const [comments, setComments] = useState<Comment[]>([]);
   const [watchProgress, setWatchProgress] = useState<Record<string, number>>({});
-  
-  const drama = dramas.find(d => d.id === id);
+
+  const drama = dramas[0]; // 暂时使用第一个短剧
 
   // 模拟剧集数据
-  const episodes: Episode[] = drama ? Array.from({ length: drama.episodes || 12 }, (_, i) => ({
+  const episodes: Episode[] = drama ? Array.from({ length: 12 }, (_, i) => ({
     id: `${drama.id}-ep-${i + 1}`,
     number: i + 1,
     title: `第${i + 1}集`,
     duration: 25 * 60, // 25分钟
     videoUrl: `https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4`,
-    thumbnail: drama.coverImage
+    thumbnail: drama.poster
   })) : [];
 
   // 模拟评论数据
@@ -215,11 +214,11 @@ const DramaDetailPage: React.FC = () => {
                   </div>
                   <div className="flex items-center">
                     <Eye className="w-4 h-4 mr-1" />
-                    <span>{drama.viewCount.toLocaleString()}</span>
+                    <span>{drama.views}</span>
                   </div>
                   <div className="flex items-center">
                     <Calendar className="w-4 h-4 mr-1" />
-                    <span>{drama.year}</span>
+                    <span>2024</span>
                   </div>
                   <div className="flex items-center">
                     <Clock className="w-4 h-4 mr-1" />
@@ -232,23 +231,22 @@ const DramaDetailPage: React.FC = () => {
                 <SocialShare
                   title={drama.title}
                   description={drama.description}
-                  imageUrl={drama.coverImage}
-                  hashtags={['短剧', drama.category]}
+                  imageUrl={drama.poster}
+                  hashtags={['短剧', ...drama.tags.slice(0, 2)]}
                 />
                 <Button
                   onClick={() => toggleFavorite(drama.id)}
-                  variant={drama.isFavorite ? "default" : "outline"}
-                  className={drama.isFavorite ? "bg-pink-600 hover:bg-pink-700" : ""}
+                  variant="outline"
+                  className="hover:bg-pink-600 hover:text-white"
                 >
-                  <Heart className={`w-4 h-4 mr-2 ${drama.isFavorite ? 'fill-current' : ''}`} />
-                  {drama.isFavorite ? '已收藏' : '收藏'}
+                  <Heart className="w-4 h-4 mr-2" />
+                  收藏
                 </Button>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-2 mb-4">
-              <Badge variant="secondary">{drama.category}</Badge>
-              {drama.tags?.map((tag, index) => (
+              {drama.tags.map((tag, index) => (
                 <Badge key={index} variant="outline">{tag}</Badge>
               ))}
             </div>
@@ -282,7 +280,7 @@ const DramaDetailPage: React.FC = () => {
               {dramas.slice(0, 5).map((relatedDrama) => (
                 <div key={relatedDrama.id} className="flex space-x-3">
                   <img
-                    src={relatedDrama.coverImage}
+                    src={relatedDrama.poster}
                     alt={relatedDrama.title}
                     className="w-16 h-20 object-cover rounded"
                   />

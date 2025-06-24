@@ -12,9 +12,11 @@ import { RegisterPage } from '@/pages/RegisterPage';
 import { CategoryPage } from '@/pages/CategoryPage';
 import { RankingPage } from '@/pages/RankingPage';
 import { Toaster } from '@/components/ui/sonner';
+import { Button } from '@/components/ui/button';
 import './App.css';
 
 type AppPage = 'main' | 'login' | 'register' | 'category' | 'ranking';
+type NavigationTab = 'home' | 'discover' | 'favorite' | 'profile';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('main');
@@ -101,7 +103,18 @@ function App() {
 
     // 短剧详情页
     if (selectedDrama) {
-      return <DramaDetailPage />;
+      return (
+        <div className="relative">
+          <Button
+            onClick={handleBackFromDetail}
+            variant="ghost"
+            className="absolute top-4 left-4 z-10 bg-black bg-opacity-50 text-white hover:bg-opacity-70"
+          >
+            ← 返回
+          </Button>
+          <DramaDetailPage />
+        </div>
+      );
     }
 
     // 主应用页面
